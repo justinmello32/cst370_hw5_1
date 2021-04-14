@@ -111,14 +111,14 @@ int main() {
         heapify(heap);
     }
 
-    int num_commands;
-    cin >> num_commands;
+    int numCommands;
+    cin >> numCommands;
 
     string command;
     int nodeValue;
     int updateValue;
 
-    for (int i = 0; i < num_commands; i++) {
+    for (int i = 0; i < numCommands; i++) {
         cin >> command;
 
 
