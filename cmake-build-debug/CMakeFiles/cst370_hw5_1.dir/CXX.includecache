@@ -7,12 +7,10 @@
 #IncludeRegexTransform: 
 
 /Users/justinmello/Documents/school/cst370/cst370_hw5_1/hw5_1.cpp
-iostream
--
 algorithm
 -
-vector
+iostream
 -
-string
+vector
 -
 
