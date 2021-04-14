@@ -1,14 +1,14 @@
+/*
+ * Title: hw5_1.cpp
+ * Abstract: Program to conduct heap operations.
+ * Author: Justin Mello
+ * ID: 2002
+ * Date: 04/13/2021
+*/
 #include <iostream>
 #include <algorithm>
 #include <vector>
 using namespace std;
-
-void printHeap(vector<int> v) {
-    for (int i = 1; i < v.size(); i++) {
-        cout << v[i] << " ";
-    }
-    cout << endl;
-}
 
 bool isMaxHeap(vector<int> heap) {
     int parent;
@@ -51,12 +51,11 @@ void heapify(vector<int> &heap) {
             while (!isHeap && leftChild < heap.size()) {
                 if (leftChild < heap.size()) {
                     if (heap[leftChild] < heap[rightChild]) {
-                        leftChild = rightChild;  // assignes right to left
+                        leftChild = rightChild;
                     }
                     if (heap[parent] >= heap[leftChild]) {
                         isHeap = true;
                     } else {
-                        // if parent is not greater than the left child
                         swap(heap[parent], heap[leftChild]);
                     }
                 }
@@ -65,14 +64,14 @@ void heapify(vector<int> &heap) {
     }
 }
 
-void insert(vector<int> &heap, int node_val) {
-    heap.push_back(node_val);
+void insert(vector<int> &heap, int nodeValue) {
+    heap.push_back(nodeValue);
     heapify(heap);
 }
 
-void deleteNode(vector<int> &heap, int node_val) {
+void deleteN(vector<int> &heap, int nodeValue) {
     for (int i = 1; i < heap.size(); i++) {
-        if (heap[i] == node_val) {
+        if (heap[i] == nodeValue) {
             heap[i] = heap.back();
             heap.pop_back();
             heapify(heap);
@@ -85,12 +84,6 @@ void update(vector<int> &heap, int node_index, int new_val) {
     heap[node_index] = new_val;
     heapify(heap);
 }
-
-
-void displayMax(vector<int> heap) {
-    cout << heap[1] << endl;
-}
-
 
 void deleteMax(vector<int> &heap) {
     heap[1] = heap.back();
@@ -122,29 +115,29 @@ int main() {
     cin >> num_commands;
 
     string command;
-    int node_val;
-    int update_val;
+    int nodeValue;
+    int updateValue;
 
     for (int i = 0; i < num_commands; i++) {
         cin >> command;
 
 
         if (command == "insert") {
-            cin >> node_val;
-            insert(heap, node_val);
+            cin >> nodeValue;
+            insert(heap, nodeValue);
         } else if (command == "delete") {
-            cin >> node_val;
-            deleteNode(heap, node_val);
+            cin >> nodeValue;
+            deleteN(heap, nodeValue);
         } else if (command == "update") {
-            cin >> node_val >> update_val;
-            update(heap, node_val, update_val);
+            cin >> nodeValue >> updateValue;
+            update(heap, nodeValue, updateValue);
         } else if (command == "display") {
             for (int i = 1; i < heap.size(); i++) {
                 cout << heap[i] << " ";
             }
             cout << endl;
         } else if (command == "displayMax") {
-            displayMax(heap);
+            cout << heap[1] << endl;
         } else if (command == "deleteMax") {
             deleteMax(heap);
         }
