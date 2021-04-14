@@ -1,72 +1,33 @@
-#include <algorithm>
 #include <iostream>
+#include <algorithm>
 #include <vector>
 using namespace std;
 
-//prototypes
-void inputHeap(vector<int> &heap);
-void print(vector<int> v);
-bool isMaxHeap(vector<int> heap);
-void heapify(vector<int> &heap);
-void inputCommands(vector<int> &heap);
-void insert(vector<int> &heap, int node_val);
-void deleteNode(vector<int> &heap, int node_val);
-void update(vector<int> &heap, int node_index, int new_val);
-void displayMax(vector<int> heap);
-void deleteMax(vector<int> &heap);
-
-int main() {
-    vector<int> heap;
-    inputHeap(heap);
-    if (isMaxHeap(heap)) {
-        cout << "This is a heap." << endl;
-    } else {
-        cout << "This is NOT a heap." << endl;
-        //call heapify
-        heapify(heap);
-    }
-    //print(heap);
-    // call input commands
-    inputCommands(heap);
-    return 0;
-}
-
-void inputHeap(vector<int> &heap) {
-    int cycles;
-    cin >> cycles;
-    heap.resize(cycles + 1);
-    int input;
-    for (int x = 1; x < cycles + 1; x++) {
-        cin >> input;
-        heap[x] = input;
-    }
-}
-
-
-void print(vector<int> v) {
-    for (int x = 1; x < v.size(); x++) {
-        cout << v[x] << " ";
+void printHeap(vector<int> v) {
+    for (int i = 1; i < v.size(); i++) {
+        cout << v[i] << " ";
     }
     cout << endl;
 }
 
 bool isMaxHeap(vector<int> heap) {
     int parent;
-    int l_child;
-    int r_child;
-    for (int x = heap.size() / 2; x > 0; x--) {
-        parent = x;
-        l_child = x * 2;      // left child
-        r_child = x * 2 + 1;  // right child
-        if (l_child < heap.size()) {
-            //check left child
-            if (heap[l_child] > heap[parent]) {
+    int leftChild;
+    int rightChild;
+    for (int i = heap.size() / 2; i > 0; i--) {
+        parent = i;
+        leftChild = i * 2;
+        rightChild = i * 2 + 1;
+        if (leftChild < heap.size()) {
+
+            //Check left
+            if (heap[leftChild] > heap[parent]) {
                 return false;
             }
         }
-        if (r_child < heap.size()) {
-            // check right child
-            if (heap[r_child] > heap[parent]) {
+        if (rightChild < heap.size()) {
+            //Check right
+            if (heap[rightChild] > heap[parent]) {
                 return false;
             }
         }
@@ -77,27 +38,26 @@ bool isMaxHeap(vector<int> heap) {
 
 void heapify(vector<int> &heap) {
     int parent;
-    int currVal;
-    bool is_heap;
-    int l_child;
-    int r_child;
+    bool isHeap;
+    int leftChild;
+    int rightChild;
 
     while (!isMaxHeap(heap)) {
         for (parent = heap.size() / 2; parent > 0; parent--) {
-            is_heap = false;
-            l_child = 2 * parent;
-            r_child = 2 * parent + 1;
+            isHeap = false;
+            leftChild = 2 * parent;
+            rightChild = 2 * parent + 1;
 
-            while (!is_heap && l_child < heap.size()) {
-                if (l_child < heap.size()) {
-                    if (heap[l_child] < heap[r_child]) {
-                        l_child = r_child;  // assignes right to left
+            while (!isHeap && leftChild < heap.size()) {
+                if (leftChild < heap.size()) {
+                    if (heap[leftChild] < heap[rightChild]) {
+                        leftChild = rightChild;  // assignes right to left
                     }
-                    if (heap[parent] >= heap[l_child]) {
-                        is_heap = true;
+                    if (heap[parent] >= heap[leftChild]) {
+                        isHeap = true;
                     } else {
                         // if parent is not greater than the left child
-                        swap(heap[parent], heap[l_child]);
+                        swap(heap[parent], heap[leftChild]);
                     }
                 }
             }
@@ -105,17 +65,15 @@ void heapify(vector<int> &heap) {
     }
 }
 
-
 void insert(vector<int> &heap, int node_val) {
     heap.push_back(node_val);
     heapify(heap);
 }
 
-
 void deleteNode(vector<int> &heap, int node_val) {
-    for (int x = 1; x < heap.size(); x++) {
-        if (heap[x] == node_val) {
-            heap[x] = heap.back();
+    for (int i = 1; i < heap.size(); i++) {
+        if (heap[i] == node_val) {
+            heap[i] = heap.back();
             heap.pop_back();
             heapify(heap);
             break;
@@ -140,8 +98,26 @@ void deleteMax(vector<int> &heap) {
     heapify(heap);
 }
 
+int main() {
 
-void inputCommands(vector<int> &heap) {
+    vector<int> heap;
+    int rounds;
+    cin >> rounds;
+    heap.resize(rounds + 1);
+    int input;
+    for (int i = 1; i < rounds + 1; i++) {
+        cin >> input;
+        heap[i] = input;
+    }
+
+    if (isMaxHeap(heap)) {
+        cout << "This is a heap." << endl;
+    } else {
+        cout << "This is NOT a heap." << endl;
+        //call heapify
+        heapify(heap);
+    }
+
     int num_commands;
     cin >> num_commands;
 
@@ -149,7 +125,7 @@ void inputCommands(vector<int> &heap) {
     int node_val;
     int update_val;
 
-    for (int x = 0; x < num_commands; x++) {
+    for (int i = 0; i < num_commands; i++) {
         cin >> command;
 
 
@@ -163,11 +139,15 @@ void inputCommands(vector<int> &heap) {
             cin >> node_val >> update_val;
             update(heap, node_val, update_val);
         } else if (command == "display") {
-            print(heap);
+            for (int i = 1; i < heap.size(); i++) {
+                cout << heap[i] << " ";
+            }
+            cout << endl;
         } else if (command == "displayMax") {
             displayMax(heap);
         } else if (command == "deleteMax") {
             deleteMax(heap);
         }
     }
+    return 0;
 }
